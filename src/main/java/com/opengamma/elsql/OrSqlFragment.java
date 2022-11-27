@@ -17,10 +17,11 @@ final class OrSqlFragment extends ConditionalSqlFragment {
    * Creates an instance.
    * 
    * @param variable  the variable to determine whether to include the OR on, not null
+   * @param comparisonSign  either '=' or '!='
    * @param matchValue  the value to match, null to match on existence
    */
-  OrSqlFragment(String variable, String matchValue) {
-    super(variable, matchValue);
+  OrSqlFragment(String variable, String comparisonSign, String matchValue) {
+    super(variable, comparisonSign, matchValue);
   }
 
   //-------------------------------------------------------------------------

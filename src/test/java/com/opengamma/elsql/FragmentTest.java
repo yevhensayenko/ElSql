@@ -157,14 +157,14 @@ public class FragmentTest {
 
   //-------------------------------------------------------------------------
   public void test_AndSqlFragment() {
-    AndSqlFragment test = new AndSqlFragment(":var", "match");
+    AndSqlFragment test = new AndSqlFragment(":var", "=", "match");
     assertEquals("var", test.getVariable());
     assertEquals("match", test.getMatchValue());
     assertEquals("AndSqlFragment:var []", test.toString());
   }
 
   public void test_AndSqlFragment_nullMatch() {
-    AndSqlFragment test = new AndSqlFragment(":var", null);
+    AndSqlFragment test = new AndSqlFragment(":var", "=", null);
     assertEquals("var", test.getVariable());
     assertEquals(null, test.getMatchValue());
     assertEquals("AndSqlFragment:var []", test.toString());
@@ -172,29 +172,29 @@ public class FragmentTest {
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void test_AndSqlFragment_nullVariable() {
-    new AndSqlFragment(null, "match");
+    new AndSqlFragment(null, "=","match");
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void test_AndSqlFragment_notVariable() {
-    new AndSqlFragment("test", "match");
+    new AndSqlFragment("test", "=","match");
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void test_AndSqlFragment_notVariableTooShort() {
-    new AndSqlFragment(":", "match");
+    new AndSqlFragment(":", "=","match");
   }
 
   //-------------------------------------------------------------------------
   public void test_OrSqlFragment() {
-    OrSqlFragment test = new OrSqlFragment(":var", "match");
+    OrSqlFragment test = new OrSqlFragment(":var", "=","match");
     assertEquals("var", test.getVariable());
     assertEquals("match", test.getMatchValue());
     assertEquals("OrSqlFragment:var []", test.toString());
   }
 
   public void test_OrSqlFragment_nullMatch() {
-    OrSqlFragment test = new OrSqlFragment(":var", null);
+    OrSqlFragment test = new OrSqlFragment(":var", "=",null);
     assertEquals("var", test.getVariable());
     assertEquals(null, test.getMatchValue());
     assertEquals("OrSqlFragment:var []", test.toString());
@@ -202,17 +202,17 @@ public class FragmentTest {
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void test_OrSqlFragment_nullVariable() {
-    new OrSqlFragment(null, "match");
+    new OrSqlFragment(null, "=","match");
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void test_OrSqlFragment_notVariable() {
-    new OrSqlFragment("test", "match");
+    new OrSqlFragment("test", "=","match");
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void test_OrSqlFragment_notVariableTooShort() {
-    new OrSqlFragment(":", "match");
+    new OrSqlFragment(":", "=","match");
   }
 
 }

@@ -19,8 +19,8 @@ final class AndSqlFragment extends ConditionalSqlFragment {
    * @param variable  the variable to determine whether to include the AND on, not null
    * @param matchValue  the value to match, null to match on existence
    */
-  AndSqlFragment(String variable, String matchValue) {
-    super(variable, matchValue);
+  AndSqlFragment(String variable, String comparisonSign, String matchValue) {
+    super(variable, comparisonSign, matchValue);
   }
 
   //-------------------------------------------------------------------------

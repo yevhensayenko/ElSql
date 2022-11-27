@@ -54,17 +54,17 @@ final class ElSqlParser {
    * The regex for @AND(variable = query).
    */
   private static final Pattern AND_PATTERN = Pattern.compile(
-      "[ ]*[@]AND[(](" + VARIABLE_LOOPINDEX + ")" + "([ ]?[=][ ]?" + QUERY_TEXT + ")?" + "[)][ ]*");
+      "[ ]*[@]AND[(](" + VARIABLE_LOOPINDEX + ")" + "(?:[ ]?(!?=)[ ]?(" + QUERY_TEXT + "))?" + "[)][ ]*");
   /**
    * The regex for @OR(variable = query).
    */
   private static final Pattern OR_PATTERN = Pattern.compile(
-      "[ ]*[@]OR[(](" + VARIABLE_LOOPINDEX + ")" + "([ ]?[=][ ]?" + QUERY_TEXT + ")?" + "[)][ ]*");
+      "[ ]*[@]OR[(](" + VARIABLE_LOOPINDEX + ")" + "(?:[ ]?(!?=)[ ]?(" + QUERY_TEXT + "))?" + "[)][ ]*");
   /**
    * The regex for @IF(variable = query).
    */
   private static final Pattern IF_PATTERN = Pattern.compile(
-      "[ ]*[@]IF[(](" + VARIABLE_LOOPINDEX + ")" + "([ ]?[=][ ]?" + QUERY_TEXT + ")?" + "[)][ ]*");
+      "[ ]*[@]IF[(](" + VARIABLE_LOOPINDEX + ")" + "(?:[ ]?(!?=)[ ]?(" + QUERY_TEXT + "))?" + "[)][ ]*");
   /**
    * The regex for @LOOP(variable)
    */
@@ -219,7 +219,7 @@ final class ElSqlParser {
         if (andMatcher.matches() == false) {
           throw new IllegalArgumentException("@AND found with invalid format: " + line);
         }
-        AndSqlFragment andFragment = new AndSqlFragment(andMatcher.group(1), extractVariable(andMatcher.group(2)));
+        AndSqlFragment andFragment = new AndSqlFragment(andMatcher.group(1), andMatcher.group(2), andMatcher.group(3));
         parseContainerSection(andFragment, lineIterator, line.indent());
         if (andFragment.getFragments().size() == 0) {
           throw new IllegalArgumentException("@AND found with no subsequent indented lines: " + line);
@@ -231,7 +231,7 @@ final class ElSqlParser {
         if (orMatcher.matches() == false) {
           throw new IllegalArgumentException("@OR found with invalid format: " + line);
         }
-        OrSqlFragment orFragment = new OrSqlFragment(orMatcher.group(1), extractVariable(orMatcher.group(2)));
+        OrSqlFragment orFragment = new OrSqlFragment(orMatcher.group(1), orMatcher.group(2), orMatcher.group(3));
         parseContainerSection(orFragment, lineIterator, line.indent());
         if (orFragment.getFragments().size() == 0) {
           throw new IllegalArgumentException("@OR found with no subsequent indented lines: " + line);
@@ -243,7 +243,7 @@ final class ElSqlParser {
         if (ifMatcher.matches() == false) {
           throw new IllegalArgumentException("@IF found with invalid format: " + line);
         }
-        IfSqlFragment ifFragment = new IfSqlFragment(ifMatcher.group(1), extractVariable(ifMatcher.group(2)));
+        IfSqlFragment ifFragment = new IfSqlFragment(ifMatcher.group(1), ifMatcher.group(2), ifMatcher.group(3));
         parseContainerSection(ifFragment, lineIterator, line.indent());
         if (ifFragment.getFragments().size() == 0) {
           throw new IllegalArgumentException("@IF found with no subsequent indented lines: " + line);

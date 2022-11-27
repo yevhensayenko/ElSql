@@ -18,15 +18,21 @@ abstract class ConditionalSqlFragment extends ContainerSqlFragment {
    * The value to match against.
    */
   private final String _matchValue;
+  /**
+   * The comparison sign. Either '=' or '!='.
+   */
+  private final String _comparisonSign;
 
   /**
    * Creates an instance.
    * 
    * @param variable  the variable to determine whether to include the AND on, not null
+   * @param comparisonSign  either '=' or '!='
    * @param matchValue  the value to match, null to match on existence
    */
-  ConditionalSqlFragment(String variable, String matchValue) {
+  ConditionalSqlFragment(String variable, String comparisonSign,  String matchValue) {
     _variable = extractVariableName(variable);
+    _comparisonSign = comparisonSign;
     _matchValue = matchValue;
   }
 
@@ -60,6 +66,9 @@ abstract class ConditionalSqlFragment extends ContainerSqlFragment {
       return false;
     }
     if (_matchValue != null) {
+      if ("!=".equals(_comparisonSign)) {
+        return !_matchValue.equalsIgnoreCase(value.toString());
+      }
       return _matchValue.equalsIgnoreCase(value.toString());
     }
     if (value instanceof Boolean) {

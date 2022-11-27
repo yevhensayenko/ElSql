@@ -881,6 +881,33 @@ public class SqlFragmentsTest {
     assertEquals("SELECT * FROM foo ", sql1);
   }
 
+
+  public void test_and_withNotMatch_varPresentMatch() {
+    List<String> lines = Arrays.asList(
+            "@NAME(Test1)",
+            "  SELECT * FROM foo",
+            "  @WHERE",
+            "    @AND(:var != Point)",
+            "      var = :var"
+    );
+    SqlFragments bundle = SqlFragments.parse(lines);
+    String sql1 = bundle.getSql("Test1", new MapSqlParams("var", "Point"));
+    assertEquals("SELECT * FROM foo ", sql1);
+  }
+
+  public void test_and_withNotMatch_varPresentNotMatch() {
+    List<String> lines = Arrays.asList(
+            "@NAME(Test1)",
+            "  SELECT * FROM foo",
+            "  @WHERE",
+            "    @AND(:var != Point)",
+            "      var = :var"
+    );
+    SqlFragments bundle = SqlFragments.parse(lines);
+    String sql1 = bundle.getSql("Test1", new MapSqlParams("var", "NoPoint"));
+    assertEquals("SELECT * FROM foo WHERE var = :var ", sql1);
+  }
+
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void test_and_invalidFormat1() {
     List<String> lines = Arrays.asList(
